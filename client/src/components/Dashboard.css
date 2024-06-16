@@ -1,0 +1,106 @@
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard-card {
+    width: 80%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 16px 0;
+    padding: 16px;
+    background-color: #f9f9f9;
+}
+
+.company-name {
+    font-size: 1.5em;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.company-info {
+    margin-bottom: 16px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.section {
+    margin-top: 16px;
+}
+
+.section h3 {
+    margin-bottom: 8px;
+    color: #444;
+}
+
+.formatted-data {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 8px;
+}
+
+.formatted-data p {
+    margin: 4px 0;
+    font-size: 1em;
+    color: #666;
+}
+
+.veridion-record {
+    margin-bottom: 12px;
+}
+
+.news-article {
+    margin-bottom: 16px;
+}
+
+.news-article h4 {
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.news-article p {
+    margin: 4px 0;
+    font-size: 1em;
+    color: #555;
+}
+
+.news-article a {
+    color: #1e90ff;
+    text-decoration: none;
+}
+
+.news-article a:hover {
+    text-decoration: underline;
+}
+
+.google-places-photo {
+    margin-top: 8px;
+    max-width: 100%;
+    border-radius: 8px;
+}
+
+.google-places-photo img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.google-places-reviews {
+    margin-top: 8px;
+}
+
+.google-places-reviews div {
+    margin-bottom: 12px;
+}
+
+.google-places-reviews p {
+    margin: 4px 0;
+    font-size: 1em;
+    color: #555;
+}
+
+.google-places-reviews strong {
+    color: #333;
+}
