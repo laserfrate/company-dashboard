@@ -4,6 +4,8 @@ import CompanyForm from './components/CompanyForm';
 import Report from './components/Report';
 import Dashboard from './components/Dashboard';
 
+const API_URL = process.env.REACT_APP_API_URL || '';
+
 function App() {
     const [results, setResults] = useState([]);
     const [counts, setCounts] = useState({
@@ -19,33 +21,37 @@ function App() {
     const itemsPerPage = 10;
 
     const generateReport = async (companies) => {
-        const response = await fetch('http://localhost:5000/enrich', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ companies }),
-        });
-        const data = await response.json();
-        setResults(data);
+        try {
+            const response = await fetch(`${API_URL}/enrich`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ companies }),
+            });
+            const data = await response.json();
+            setResults(data);
 
-        const newCounts = {
-            veridion: 0,
-            news: 0,
-            googlePlaces: 0,
-        };
+            const newCounts = {
+                veridion: 0,
+                news: 0,
+                googlePlaces: 0,
+            };
 
-        data.forEach(result => {
-            if (result.veridionData && !result.veridionData.error) newCounts.veridion += result.veridionData.length;
-            if (result.newsData && !result.newsData.error) newCounts.news += result.newsData.length;
-            if (result.googlePlacesData && !result.googlePlacesData.error) newCounts.googlePlaces++;
-        });
+            data.forEach(result => {
+                if (result.veridionData && !result.veridionData.error) newCounts.veridion += result.veridionData.length;
+                if (result.newsData && !result.newsData.error) newCounts.news += result.newsData.length;
+                if (result.googlePlacesData && !result.googlePlacesData.error) newCounts.googlePlaces++;
+            });
 
-        setCounts(newCounts);
-        setShowVeridion(false);
-        setShowNews(false);
-        setShowGooglePlaces(false);
-        setShowDashboard(false);
+            setCounts(newCounts);
+            setShowVeridion(false);
+            setShowNews(false);
+            setShowGooglePlaces(false);
+            setShowDashboard(false);
+        } catch (error) {
+            console.error('Error generating report:', error);
+        }
     };
 
     const handleToggle = (toggleFunction) => {
