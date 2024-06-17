@@ -25,15 +25,22 @@ const getNewsData = async (company) => {
 const getVeridionData = async (company) => {
     try {
         const results = [];
-        const filePath = path.join(__dirname, '../../client/public/data/veridion_dataset.csv');
+        const filePath = path.resolve(__dirname, '../../client/public/data/veridion_dataset.csv');
         console.log('Processing Veridion dataset from local file...');
         console.log('Reading Veridion dataset from:', filePath);
+
+        // Verifică dacă fișierul există
+        if (!fs.existsSync(filePath)) {
+            console.error('File not found:', filePath);
+            return { error: 'File not found.' };
+        }
 
         // Read the CSV file locally
         return new Promise((resolve, reject) => {
             fs.createReadStream(filePath)
                 .pipe(csv({ separator: ';' }))
                 .on('data', (data) => {
+                    console.log('Row data:', data);
                     results.push(data);
                 })
                 .on('end', () => {
