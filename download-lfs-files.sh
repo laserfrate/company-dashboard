@@ -14,3 +14,6 @@ sudo apt-get install git-lfs
 git lfs install
 git lfs fetch
 git lfs checkout
+
+# Debug: list the contents of the data directory
+ls -al /app/client/public/data/
