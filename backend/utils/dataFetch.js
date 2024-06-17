@@ -29,10 +29,17 @@ const getVeridionData = async (company) => {
         console.log('Processing Veridion dataset from local file...');
         console.log('Reading Veridion dataset from:', filePath);
 
-        // Verifică dacă fișierul există
         if (!fs.existsSync(filePath)) {
             console.error('File not found:', filePath);
             return { error: 'File not found.' };
+        }
+
+        // Verifică dacă fișierul există și are drepturi de acces
+        try {
+            await fs.promises.access(filePath, fs.constants.R_OK);
+        } catch (err) {
+            console.error('File not accessible:', filePath, err);
+            return { error: 'File not accessible.' };
         }
 
         // Read the CSV file locally
