@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node backend/server.js",
-    "heroku-postbuild": "npm install --prefix client && npm install --prefix backend && npm run build --prefix client"
-  },
+    "heroku-postbuild": "NODE_OPTIONS=--openssl-legacy-provider npm install --prefix client && NODE_OPTIONS=--openssl-legacy-provider npm run build --prefix client"
+  }
+,  
   "engines": {
-    "node": "20.x",
+    "node": "16.x",
     "npm": "10.x"
   },
   "dependencies": {
