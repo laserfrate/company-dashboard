@@ -1,1 +1,1 @@
-web: node backend/server.js
+web: ./download-lfs-files.sh && node backend/server.js
