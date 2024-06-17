@@ -25,9 +25,9 @@ const getNewsData = async (company) => {
 const getVeridionData = async (company) => {
     try {
         const results = [];
-        const filePath = path.join(__dirname, '../data/veridion_dataset.csv');
-        console.log('Processing Veridion dataset from local file...');
-        
+        const filePath = path.join(__dirname, '../../client/public/data/veridion_dataset.csv');
+        console.log(`Reading Veridion dataset from: ${filePath}`);
+
         // Read the CSV file locally
         return new Promise((resolve, reject) => {
             fs.createReadStream(filePath)
