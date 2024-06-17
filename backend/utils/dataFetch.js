@@ -16,6 +16,7 @@ const getNewsData = async (company) => {
 const getVeridionData = async (company) => {
     try {
         const results = [];
+        console.log('Fetching Veridion dataset from Google Drive...');
         // Fetch the CSV file from Google Drive
         const response = await axios({
             url: 'https://drive.google.com/uc?export=download&id=1KolHZSAqMwH1CKAL-va2I_nXEer5ADNv',
@@ -23,12 +24,17 @@ const getVeridionData = async (company) => {
             responseType: 'stream',
         });
 
+        console.log('Processing Veridion dataset...');
         // Stream the CSV data and process it
         return new Promise((resolve, reject) => {
             response.data
                 .pipe(csv({ separator: ';' }))
-                .on('data', (data) => results.push(data))
+                .on('data', (data) => {
+                    results.push(data);
+                    console.log('Data:', data); // Log each row of data
+                })
                 .on('end', () => {
+                    console.log('Total rows fetched:', results.length);
                     let filteredData = results.filter(row =>
                         row.company_name && row.company_name.toLowerCase().includes(company.name.toLowerCase())
                     );
@@ -39,6 +45,7 @@ const getVeridionData = async (company) => {
                         );
                     }
 
+                    console.log('Filtered data:', filteredData);
                     resolve(filteredData.length > 0 ? filteredData : { error: 'No data found in Veridion dataset.' });
                 })
                 .on('error', (error) => {
