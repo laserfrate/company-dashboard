@@ -1,6 +1,4 @@
 const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
 const csv = require('csv-parser');
 
 const getNewsData = async (company) => {
@@ -16,30 +14,18 @@ const getNewsData = async (company) => {
 };
 
 const getVeridionData = async (company) => {
-    const results = [];
-    const tempFilePath = path.join(__dirname, 'veridion_dataset.csv');
-
     try {
-        // Download the file from Google Drive
+        const results = [];
+        // Fetch the CSV file from Google Drive
         const response = await axios({
             url: 'https://drive.google.com/uc?export=download&id=1KolHZSAqMwH1CKAL-va2I_nXEer5ADNv',
             method: 'GET',
             responseType: 'stream',
         });
 
-        // Save the file locally
-        const writer = fs.createWriteStream(tempFilePath);
-        response.data.pipe(writer);
-
-        // Wait for the file to be fully written
-        await new Promise((resolve, reject) => {
-            writer.on('finish', resolve);
-            writer.on('error', reject);
-        });
-
-        // Process the CSV file
+        // Stream the CSV data and process it
         return new Promise((resolve, reject) => {
-            fs.createReadStream(tempFilePath)
+            response.data
                 .pipe(csv({ separator: ';' }))
                 .on('data', (data) => results.push(data))
                 .on('end', () => {
@@ -63,11 +49,6 @@ const getVeridionData = async (company) => {
     } catch (error) {
         console.error('Error fetching or processing Veridion dataset:', error);
         return { error: 'Failed to fetch or process Veridion dataset.' };
-    } finally {
-        // Clean up the temporary file
-        if (fs.existsSync(tempFilePath)) {
-            fs.unlinkSync(tempFilePath);
-        }
     }
 };
 
