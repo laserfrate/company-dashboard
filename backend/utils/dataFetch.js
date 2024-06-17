@@ -17,28 +17,58 @@ const getNewsData = async (company) => {
 
 const getVeridionData = async (company) => {
     const results = [];
-    return new Promise((resolve, reject) => {
-        fs.createReadStream(path.join(__dirname, '../data/veridion_dataset.csv'))
-            .pipe(csv({ separator: ';' }))
-            .on('data', (data) => results.push(data))
-            .on('end', () => {
-                let filteredData = results.filter(row =>
-                    row.company_name && row.company_name.toLowerCase().includes(company.name.toLowerCase())
-                );
+    const tempFilePath = path.join(__dirname, 'veridion_dataset.csv');
 
-                if (company.domain) {
-                    filteredData = filteredData.filter(row =>
-                        row.domain && row.domain.toLowerCase().includes(company.domain.toLowerCase())
+    try {
+        // Download the file from Google Drive
+        const response = await axios({
+            url: 'https://drive.google.com/uc?export=download&id=1KolHZSAqMwH1CKAL-va2I_nXEer5ADNv',
+            method: 'GET',
+            responseType: 'stream',
+        });
+
+        // Save the file locally
+        const writer = fs.createWriteStream(tempFilePath);
+        response.data.pipe(writer);
+
+        // Wait for the file to be fully written
+        await new Promise((resolve, reject) => {
+            writer.on('finish', resolve);
+            writer.on('error', reject);
+        });
+
+        // Process the CSV file
+        return new Promise((resolve, reject) => {
+            fs.createReadStream(tempFilePath)
+                .pipe(csv({ separator: ';' }))
+                .on('data', (data) => results.push(data))
+                .on('end', () => {
+                    let filteredData = results.filter(row =>
+                        row.company_name && row.company_name.toLowerCase().includes(company.name.toLowerCase())
                     );
-                }
 
-                resolve(filteredData.length > 0 ? filteredData : { error: 'No data found in Veridion dataset.' });
-            })
-            .on('error', (error) => {
-                console.error('Error reading Veridion dataset:', error);
-                reject({ error: 'Failed to read Veridion dataset.' });
-            });
-    });
+                    if (company.domain) {
+                        filteredData = filteredData.filter(row =>
+                            row.domain && row.domain.toLowerCase().includes(company.domain.toLowerCase())
+                        );
+                    }
+
+                    resolve(filteredData.length > 0 ? filteredData : { error: 'No data found in Veridion dataset.' });
+                })
+                .on('error', (error) => {
+                    console.error('Error reading Veridion dataset:', error);
+                    reject({ error: 'Failed to read Veridion dataset.' });
+                });
+        });
+    } catch (error) {
+        console.error('Error fetching or processing Veridion dataset:', error);
+        return { error: 'Failed to fetch or process Veridion dataset.' };
+    } finally {
+        // Clean up the temporary file
+        if (fs.existsSync(tempFilePath)) {
+            fs.unlinkSync(tempFilePath);
+        }
+    }
 };
 
 const getGooglePlacesData = async (company) => {
