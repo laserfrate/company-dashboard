@@ -5,10 +5,17 @@ const path = require('path');
 
 const getNewsData = async (company) => {
     try {
-        const query = company.name.split(' ').join('+');
+        const query = `${company.name} ${company.domain ? company.domain : ''} ${company.main_country ? company.main_country : ''}`;
         const newsResponse = await axios.get(`https://newsapi.org/v2/everything?q=${query}&apiKey=${process.env.NEWS_API_KEY}`);
         const articles = newsResponse.data.articles;
-        return articles;
+
+        // Filtrare articole relevante
+        const relevantArticles = articles.filter(article => 
+            article.title.toLowerCase().includes(company.name.toLowerCase()) || 
+            article.description.toLowerCase().includes(company.name.toLowerCase())
+        );
+
+        return relevantArticles;
     } catch (error) {
         console.error('Error fetching news data for company:', company.name, error);
         return { error: 'Failed to fetch news data.' };
