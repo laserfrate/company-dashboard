@@ -25,9 +25,9 @@ const getNewsData = async (company) => {
 const getVeridionData = async (company) => {
     try {
         const results = [];
-        const filePath = path.join(__dirname, '../client/public/data/veridion_dataset.csv');
+        const filePath = path.join(__dirname, '../../client/public/data/veridion_dataset.csv');
         console.log('Processing Veridion dataset from local file...');
-        console.log(`Reading Veridion dataset from: ${filePath}`);
+        console.log('Reading Veridion dataset from:', filePath);
 
         // Read the CSV file locally
         return new Promise((resolve, reject) => {
@@ -38,7 +38,6 @@ const getVeridionData = async (company) => {
                 })
                 .on('end', () => {
                     console.log('Total rows fetched:', results.length);
-                    console.log('Sample row:', results[0]); // Log a sample row to check structure
                     let filteredData = results.filter(row =>
                         row.company_name && row.company_name.toLowerCase().includes(company.name.toLowerCase())
                     );
