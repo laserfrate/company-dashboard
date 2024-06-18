@@ -43,7 +43,7 @@ const processVeridionDataset = () => {
     });
 
     rl.on('close', () => {
-        const chunks = splitArrayIntoChunks(results, 4);
+        const chunks = splitArrayIntoChunks(results, 5);
 
         // Salvare în fișiere CSV
         chunks.forEach((chunk, index) => {
