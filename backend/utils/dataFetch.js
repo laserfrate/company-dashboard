@@ -25,7 +25,7 @@ const getNewsData = async (company) => {
 const getVeridionData = async (company) => {
     try {
         const results = [];
-        const filePath = path.resolve(__dirname, '../../client/public/data/veridion_dataset.csv');
+        const filePath = path.resolve(__dirname, '../../client/public/data/veridion_datasets.csv');
         console.log('Processing Veridion dataset from local file...');
         console.log('Reading Veridion dataset from:', filePath);
 

@@ -3,7 +3,7 @@ const path = require('path');
 const readline = require('readline');
 
 const checkVeridionDataset = () => {
-    const filePath = path.join(__dirname, './veridion_dataset.csv');
+    const filePath = path.join(__dirname, './veridion_datasets.csv');
     const rl = readline.createInterface({
         input: fs.createReadStream(filePath),
         crlfDelay: Infinity

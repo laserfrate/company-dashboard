@@ -20,7 +20,7 @@ const writeCSV = (filename, headers, data) => {
 
 // Funcția principală pentru a citi, împărți și verifica dataset-ul
 const processVeridionDataset = () => {
-    const filePath = path.join(__dirname, './veridion_dataset.csv');
+    const filePath = path.join(__dirname, './veridion_datasets.csv');
     const rl = readline.createInterface({
         input: fs.createReadStream(filePath),
         crlfDelay: Infinity
