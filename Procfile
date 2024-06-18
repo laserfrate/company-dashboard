@@ -1,1 +1,1 @@
-web: ./download-lfs-files.sh && node backend/server.js
+web: ./heroku-build.sh && node backend/server.js
