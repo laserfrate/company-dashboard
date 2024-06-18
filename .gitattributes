@@ -1,2 +1,0 @@
-client/public/data/veridion_dataset.csv filter=lfs diff=lfs merge=lfs -text
-client/build/data/veridion_dataset.csv filter=lfs diff=lfs merge=lfs -text
